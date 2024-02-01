@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
+  "lib": {
+    "entryFile": "index.ts"
+  },
+  "allowedNonPeerDependencies": [
+    "@angular/animations",
+    "@angular/cdk",
+    "@angular/common",
+    "@angular/compiler",
+    "@angular/core",
+    "@angular/platform-browser",
+    "@angular/platform-browser-dynamic",
+    "@angular/router",
+    "@ng-icons/core",
+    "@ng-icons/feather-icons",
+    "@ng-icons/lucide",
+    "feather-icons",
+    "rxjs",
+    "tslib",
+    "zone.js"
+  ]
+}
