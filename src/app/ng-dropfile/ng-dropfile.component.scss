@@ -1,0 +1,97 @@
+.upload-container {
+  display: block;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.fu-fileinfo {
+  margin-top: 10px;
+  padding: 5px;
+  border: 1.5px solid #eaeced;
+  background-color: #f9f9f9;
+  display: flex;
+  text-align: left;
+  padding: 1rem 1.2rem;
+  border-radius: 0.5rem;
+  
+
+  & .fu-fileinfo-icon {
+    align-self: center;
+    width: 45px;
+  }
+  & .fu-fileinfo-icon-remove {
+    text-align: right;
+    align-self: center;
+    width: 45px;
+    cursor: pointer;
+    & .fu-icon {
+
+        border-radius: 50%;
+        padding: 5px;
+       
+      
+        &:hover {
+          transition: 400ms;
+          color: #f19a9a !important;
+        }
+    }
+  }
+  & .fu-fileinfo-name {
+    flex-grow: 1;
+    font-size: 0.85rem;
+    color: #77828a;
+    font-weight: 400;
+    align-self: center;
+    & p {
+      margin: 0;
+    }
+  }
+  & .fu-fileinfo-size {
+    color: #b3c0c5;
+    font-size: 0.7rem;
+  }
+}
+
+.fu-container {
+  padding: 25px;
+  height: inherit;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  display: flex;
+  border-radius: 0.8rem;
+  border-style: dashed;
+  border-color: rgba(199, 205, 210, 0.4);
+
+  & input{
+    display: none;
+  }
+
+  &:hover {
+    background-color: #f7fbff;
+  }
+
+  & .fu-icon {
+    margin-bottom: 0px;
+  }
+
+  & .fu-msg {
+    margin-bottom: 0;
+  }
+  & .fu-smsg {
+    margin-bottom: 0;
+    color: #b3c0c5;
+    font-size: 0.7rem;
+  }
+
+  & .fu-button {
+    cursor: pointer;
+    margin-top: 20px;
+    color: #b3c0c5;
+    background-color: white;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+    padding: 8px 12px;
+  }
+}
