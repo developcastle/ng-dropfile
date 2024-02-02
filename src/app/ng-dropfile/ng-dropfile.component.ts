@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IDropfile, DropfileDefaults } from '../models/dropfile';
+import { DropfileOptions, DropfileDefaultOptions } from '../models/dropfile';
 import { trigger, transition, animate, style } from '@angular/animations';
 
 export const fadeOutAnimation = trigger('fadeOut', [
@@ -12,7 +12,7 @@ export const fadeOutAnimation = trigger('fadeOut', [
   styleUrls: ['./ng-dropfile.component.scss'],
   animations: [fadeOutAnimation],
 })
-export class DropfileComponent implements IDropfile, OnInit {
+export class DropfileComponent implements DropfileOptions, OnInit {
   //Events
   @Output() onSelect: EventEmitter<File[] | FileList> = new EventEmitter<
     File[] | FileList
@@ -20,8 +20,6 @@ export class DropfileComponent implements IDropfile, OnInit {
   @Output() onDelete: EventEmitter<File> = new EventEmitter<File>();
   @Output() onClear: EventEmitter<void> = new EventEmitter<void>();
   @Output() onError: EventEmitter<string> = new EventEmitter<string>();
-
-  //Properties
 
   @Input() defaultFile: string;
   @Input() maxFileSize: number;
@@ -39,7 +37,7 @@ export class DropfileComponent implements IDropfile, OnInit {
   @Input() showFileList: boolean;
 
   constructor() {
-    const defaultValues: IDropfile = new DropfileDefaults();
+    const defaultValues: DropfileOptions = new DropfileDefaultOptions();
     Object.assign(this, defaultValues);
   }
 
