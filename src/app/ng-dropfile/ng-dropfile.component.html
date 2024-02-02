@@ -61,7 +61,7 @@
         <p>{{ file.name }}</p>
         <p class="fu-fileinfo-size">{{ this.formatFileSize(file.size) }}</p>
       </div>
-      <div class="fu-fileinfo-icon-remove" (click)="removeFile(i)">
+      <div class="fu-fileinfo-icon-remove" (click)="removeFile(i,file)">
         <ng-icon
           class="fu-icon"
           [color]="'gray'"

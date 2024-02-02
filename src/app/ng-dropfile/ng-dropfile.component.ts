@@ -1,8 +1,10 @@
 import {
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   ViewEncapsulation,
 } from '@angular/core';
 import {
@@ -21,7 +23,11 @@ export const fadeOutAnimation = trigger('fadeOut', [
   styleUrls: ['./ng-dropfile.component.scss'],
   animations: [fadeOutAnimation],
 })
-export class FileuploadComponent implements IFileUploadConfig, OnInit {
+export class DropfileComponent implements IFileUploadConfig, OnInit {
+
+  @Output() onSelectedFiles: EventEmitter<File[] | FileList> = new EventEmitter<File[] | FileList>();
+  @Output() onDelete: EventEmitter<File> = new EventEmitter<File>();
+
   def: FileUploadConfigDefaults = new FileUploadConfigDefaults();
   @Input() defaultFile: string = this.def.getDefault('defaultFile');
   @Input() maxFileSize: number = this.def.getDefault('maxFileSize');
@@ -47,42 +53,42 @@ export class FileuploadComponent implements IFileUploadConfig, OnInit {
     if (this.formatsMessage == '')
       this.formatsMessage = this.generateFormatMessage();
   }
-  imagenSeleccionada: string = '';
+  protected imagenSeleccionada: string = '';
   selectedFiles: File[] = [];
-  displayImage: boolean = false;
+  protected displayImage: boolean = false;
 
-  onDrop(event: any): void {
+  protected onDrop(event: any): void {
     event.preventDefault();
     const files: File[] = event.dataTransfer.files;
     this.verifyFiles(files);
     event.stopPropagation();
   }
 
-  onUpload(): void {
+  protected onUpload(): void {
     const formData = new FormData();
     for (const file of this.selectedFiles) {
       formData.append('files', file, file.name);
     }
   }
-  onDragOver(event: any) {
+ protected onDragOver(event: any) {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'copy';
     event.stopPropagation();
   }
 
-  triggerFileInput(fileInput: HTMLInputElement): void {
+  protected triggerFileInput(fileInput: HTMLInputElement): void {
     fileInput.click();
   }
 
-  onFileSelect(event: any): void {
+  protected onFileSelect(event: any): void {
     const files: FileList = event.target.files;
     this.verifyFiles(files);
   }
 
-  verifyFiles(files: File[] | FileList) {
+  protected verifyFiles(files: File[] | FileList) {
     if (files) {
       const archivosNoValidos = Array.from(files).filter(
-        (file) => file.size > this.maxFileSize
+        (file) => this.bytesToMB(file.size) > this.maxFileSize
       );
       if (archivosNoValidos.length > 0) {
         alert('Algunos archivos pesan demasiado');
@@ -101,25 +107,32 @@ export class FileuploadComponent implements IFileUploadConfig, OnInit {
           this.displayImage = false;
         }
       }
+      
+      this.onSelectedFiles.emit(files);        
     }
   }
+  protected bytesToMB(bytes: number): number {
+    return bytes / (1024 * 1024);
+  }
 
-  isValidFileExtension(fileName: string): boolean {
+  
+  protected isValidFileExtension(fileName: string): boolean {
     const extension = fileName.split('.').pop()?.toLowerCase();
     return extension ? this.formatsAccepted.includes(extension) : false;
   }
 
-  getFileExtension(fileName: string): string {
+  protected getFileExtension(fileName: string): string {
     return fileName.split('.').pop()?.toLowerCase() || '';
   }
   someCondition: boolean = true;
-  removeFile(index: number) {
+  protected  removeFile(index: number,file:File) {
+    this.onDelete.emit(file);
     this.someCondition = true;
     this.selectedFiles.splice(index, 1);
     if (this.selectedFiles.length == 0) this.displayImage = false;
   }
 
-  formatFileSize(bytes: number): string {
+  protected formatFileSize(bytes: number): string {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
     if (bytes === 0) return '0 Byte';
     const i = parseInt(
@@ -129,11 +142,11 @@ export class FileuploadComponent implements IFileUploadConfig, OnInit {
     return Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + ' ' + sizes[i];
   }
 
-  generateAcceptAttribute(): string {
+  protected generateAcceptAttribute(): string {
     return this.formatsAccepted.map((ext) => `.${ext}`).join(',');
   }
 
-  generateFormatMessage(): string {
+  protected generateFormatMessage(): string {
     const formatNames = this.formatsAccepted.map((ext) => ext.toUpperCase());
 
     if (formatNames.length === 1) {
@@ -146,7 +159,16 @@ export class FileuploadComponent implements IFileUploadConfig, OnInit {
     }
   }
 
-  isImageFile(file: File): boolean {
+  protected isImageFile(file: File): boolean {
     return file.type.startsWith('image/');
   }
+
+  /**
+   * Remove all files of the component
+   */
+  public clear(): void {
+   this.selectedFiles=[];
+   this.displayImage= false;
+  }
+
 }

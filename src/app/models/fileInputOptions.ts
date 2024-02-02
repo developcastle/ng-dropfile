@@ -19,7 +19,7 @@ export interface IFileUploadConfig {
 
 export  class  FileUploadConfigDefaults implements IFileUploadConfig {
     defaultFile= '';
-    maxFileSize= 348576;
+    maxFileSize= 0.6;
     minWidth= 0;
     maxWidth= 0;
     minHeight= 0;
@@ -29,7 +29,7 @@ export  class  FileUploadConfigDefaults implements IFileUploadConfig {
     showLoader= true;
     showErrors= true;
     showFileList= true;
-    formatsAccepted= ['png', 'jpg', 'jpeg', 'gif','bmp' ,'pdf'];
+    formatsAccepted= ['png', 'jpg', 'jpeg', 'gif' ,'pdf'];
     message= 'Choose a file or drag and drop it here';
     formatsMessage= '';
     msgReplace= 'Drag and drop or click to replace';

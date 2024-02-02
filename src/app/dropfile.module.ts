@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FileuploadComponent } from './ng-dropfile/ng-dropfile.component';
+import { DropfileComponent } from './ng-dropfile/ng-dropfile.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgIconsModule } from '@ng-icons/core';
 import { featherUploadCloud, featherFile ,featherTrash2,featherImage} from '@ng-icons/feather-icons';
@@ -12,7 +12,7 @@ import { featherUploadCloud, featherFile ,featherTrash2,featherImage} from '@ng-
 @NgModule({
   declarations: [
     AppComponent,
-    FileuploadComponent
+    DropfileComponent
   ],
   imports: [
     BrowserModule,
@@ -25,4 +25,4 @@ import { featherUploadCloud, featherFile ,featherTrash2,featherImage} from '@ng-
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class DropfileModule { }
