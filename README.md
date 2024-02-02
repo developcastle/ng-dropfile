@@ -17,14 +17,28 @@ Install __ng-dropfile__ package with npm
 [Documentation](https://linktodocumentation)
 
 
+
 ## Usage/Examples
 
-```javascript
-import Component from 'my-project'
+Import the __ngDropfileModule__ in your application.
 
-function App() {
-  return <Component />
-}
+```javascript
+import { NgDropfileModule } from 'ng-dropfile';
+
+imports: [
+    NgDropfileModule,
+    ...
+
+```
+
+Create the directive where you need it:
+```html
+<ng-dropfile></ng-dropfile>
+```
+
+You can customize your _dropfile_ properties directly.
+```html
+<ng-dropfile [message]="'Drag and Drop your files'"></ng-dropfile>
 ```
 
 
