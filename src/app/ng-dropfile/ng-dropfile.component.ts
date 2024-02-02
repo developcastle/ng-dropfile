@@ -1,16 +1,5 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewEncapsulation,
-} from '@angular/core';
-import {
-  IFileUploadConfig,
-  FileUploadConfigDefaults,
-} from '../models/fileInputOptions';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IDropfile, DropfileDefaults } from '../models/dropfile';
 import { trigger, transition, animate, style } from '@angular/animations';
 
 export const fadeOutAnimation = trigger('fadeOut', [
@@ -23,35 +12,40 @@ export const fadeOutAnimation = trigger('fadeOut', [
   styleUrls: ['./ng-dropfile.component.scss'],
   animations: [fadeOutAnimation],
 })
-export class DropfileComponent implements IFileUploadConfig, OnInit {
-
-  @Output() onSelectedFiles: EventEmitter<File[] | FileList> = new EventEmitter<File[] | FileList>();
+export class DropfileComponent implements IDropfile, OnInit {
+  //Events
+  @Output() onSelect: EventEmitter<File[] | FileList> = new EventEmitter<
+    File[] | FileList
+  >();
   @Output() onDelete: EventEmitter<File> = new EventEmitter<File>();
+  @Output() onClear: EventEmitter<void> = new EventEmitter<void>();
+  @Output() onError: EventEmitter<string> = new EventEmitter<string>();
 
-  def: FileUploadConfigDefaults = new FileUploadConfigDefaults();
-  @Input() defaultFile: string = this.def.getDefault('defaultFile');
-  @Input() maxFileSize: number = this.def.getDefault('maxFileSize');
-  @Input() minWidth: number = this.def.getDefault('minWidth');
-  @Input() maxWidth: number = this.def.getDefault('maxFileSize');
-  @Input() minHeight: number = this.def.getDefault('minHeight');
-  @Input() maxHeight: number = this.def.getDefault('maxHeight');
-  @Input() showRemove: boolean = this.def.getDefault('showRemove');
-  @Input() showLoader: boolean = this.def.getDefault('showLoader');
-  @Input() showErrors: boolean = this.def.getDefault('showErrors');
-  @Input() formatsAccepted: string[] = this.def.getDefault('formatsAccepted');
+  //Properties
 
-  @Input() message: string = this.def.getDefault('message');
-  @Input() formatsMessage: string = this.def.getDefault('formatsMessage');
-  @Input() msgError: string = this.def.getDefault('msgError');
-  @Input() msgReplace: string = this.def.getDefault('msgReplace');
-  @Input() multiple: boolean = this.def.getDefault('multiple');
-  @Input() showFileList: boolean = this.def.getDefault('showFileList');
+  @Input() defaultFile: string;
+  @Input() maxFileSize: number;
+  @Input() minWidth: number;
+  @Input() maxWidth: number;
+  @Input() minHeight: number;
+  @Input() maxHeight: number;
+  @Input() showRemove: boolean;
+  @Input() showLoader: boolean;
+  @Input() showErrors: boolean;
+  @Input() formatsAccepted: string[];
+  @Input() messages: any;
+  @Input() error: any;
+  @Input() multiple: boolean;
+  @Input() showFileList: boolean;
 
-  constructor() {}
+  constructor() {
+    const defaultValues: IDropfile = new DropfileDefaults();
+    Object.assign(this, defaultValues);
+  }
 
   ngOnInit(): void {
-    if (this.formatsMessage == '')
-      this.formatsMessage = this.generateFormatMessage();
+    if (this.messages.formats == '')
+      this.messages.formats = this.generateFormatMessage();
   }
   protected imagenSeleccionada: string = '';
   selectedFiles: File[] = [];
@@ -64,13 +58,7 @@ export class DropfileComponent implements IFileUploadConfig, OnInit {
     event.stopPropagation();
   }
 
-  protected onUpload(): void {
-    const formData = new FormData();
-    for (const file of this.selectedFiles) {
-      formData.append('files', file, file.name);
-    }
-  }
- protected onDragOver(event: any) {
+  protected onDragOver(event: any) {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'copy';
     event.stopPropagation();
@@ -91,7 +79,7 @@ export class DropfileComponent implements IFileUploadConfig, OnInit {
         (file) => this.bytesToMB(file.size) > this.maxFileSize
       );
       if (archivosNoValidos.length > 0) {
-        alert('Algunos archivos pesan demasiado');
+        this.onError.emit('Some files are too big.');
         return;
       }
       this.imagenSeleccionada = URL.createObjectURL(files[0]);
@@ -107,15 +95,14 @@ export class DropfileComponent implements IFileUploadConfig, OnInit {
           this.displayImage = false;
         }
       }
-      
-      this.onSelectedFiles.emit(files);        
+
+      this.onSelect.emit(files);
     }
   }
   protected bytesToMB(bytes: number): number {
     return bytes / (1024 * 1024);
   }
 
-  
   protected isValidFileExtension(fileName: string): boolean {
     const extension = fileName.split('.').pop()?.toLowerCase();
     return extension ? this.formatsAccepted.includes(extension) : false;
@@ -125,7 +112,7 @@ export class DropfileComponent implements IFileUploadConfig, OnInit {
     return fileName.split('.').pop()?.toLowerCase() || '';
   }
   someCondition: boolean = true;
-  protected  removeFile(index: number,file:File) {
+  protected removeFile(index: number, file: File) {
     this.onDelete.emit(file);
     this.someCondition = true;
     this.selectedFiles.splice(index, 1);
@@ -167,8 +154,8 @@ export class DropfileComponent implements IFileUploadConfig, OnInit {
    * Remove all files of the component
    */
   public clear(): void {
-   this.selectedFiles=[];
-   this.displayImage= false;
+    this.selectedFiles = [];
+    this.displayImage = false;
+    this.onClear.emit();
   }
-
 }

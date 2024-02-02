@@ -23,5 +23,6 @@ import {
     }),
   ],
   exports: [DropfileComponent],
+  bootstrap:[DropfileComponent]
 })
 export class NgDropfileModule {}
