@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DropfileOptions, DropfileDefaultOptions } from '../models/dropfile';
+import { DropfileOptions, DropfileDefaultOptions } from './ng-dropfile';
 import { trigger, transition, animate, style } from '@angular/animations';
 
 export const fadeOutAnimation = trigger('fadeOut', [
