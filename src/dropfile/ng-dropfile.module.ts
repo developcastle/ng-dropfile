@@ -9,9 +9,10 @@ import {
   featherTrash2,
   featherImage,
 } from '@ng-icons/feather-icons';
+import { DevComponent } from 'src/dropfile-develop/dev.component';
 
 @NgModule({
-  declarations: [DropfileComponent],
+  declarations: [DropfileComponent,DevComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -23,6 +24,6 @@ import {
     }),
   ],
   exports: [DropfileComponent],
-  bootstrap:[DropfileComponent]
+  bootstrap:[DevComponent]
 })
 export class NgDropfileModule {}

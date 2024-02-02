@@ -50,12 +50,12 @@ This is how you can change the default messages for the component:
 ```html
 <ng-dropfile [messages]="{ description:'Drag and Drop your files'}"></ng-dropfile>
 ```
-You also can capture the emmited events:
+You also can capture the  emmited events:
 ```html
 <ng-dropfile (onClear)="myFunction($event)"></ng-dropfile>
 ```
 
-## Options
+## Options  
 Individual customizable options.
 
 | Option          | Description                                       | Type                  | Default Value         |
@@ -72,8 +72,14 @@ Individual customizable options.
 | `showErrors`       | Show or hide error messages.                      | `boolean`             | `true`                |
 | `showFileList`     | Show or hide the list of selected files.          | `boolean`             | `true`                |
 | `formatsAccepted`  | Accepted file formats.                            | `string[]`            | `['png', 'jpg', 'jpeg', 'gif', 'pdf']` |
-| `messages`         | Custom messages for the user interface.           | `{ description: string, formats: string, replace: string }` | `{ description: 'Choose a file or drag and drop it here', formats: '', replace: 'Click to replace' }` |
-| `errors`           | Possible error messages.                          | `{ default: string, filesize: string, formats: string }` | `{ default: 'Ooops; something wrong happened.', filesize: 'Some files are too big.', formats: 'Some files don't match the valid formats.' }` |
+| `messages`         | Custom messages for the user interface.           | `object` |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default message to select file.   | `string`  | `Choose a file or drag and drop it here` |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`formats`       | Default message for accepted formats/extensions.   | `string`  | `Only <formats> formats accepted.` |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default message to replace file.   | `string`  | `Click to replace` |
+| `errors`           | Possible error messages.                          | `object` |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default error message   | `string`  | `Ooops; something wrong happened.` |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`filesize`       | Default error message for file size.   | `string`  | `Some files are too big.` |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`formats`       | Default message to replace file.   | `string`  | `Some files don't match the valid formats.` |
 
 ## Events
 Callable
@@ -81,9 +87,39 @@ Callable
 | Event            | Description                                        | Event Type                        |
 |-------------------|----------------------------------------------------|-----------------------------------|
 | `onDelete`          | Triggered when a file is deleted or removed.       | `EventEmitter<File>` |
-| `onSelect`   | Triggered when one or more files are selected.     | `EventEmitter<File[] \| FileList>`  |
+| `onSelect`   | Triggered when one or more files are selected.     | `EventEmitter<File[]>`  |
 | `onError`           | Triggered when an error occurs.                    | `EventEmitter<string>`            |
 | `onClear`           | Triggered when the component is reset or cleared.  | `EventEmitter<void>`              |
+
+## Methods
+
+
+| Event            | Description                                        | Event Type                        |
+|-------------------|----------------------------------------------------|-----------------------------------|
+| `getList`          |We get the selected files.       | `File[]` |
+| `clear`   | Clear all selected files.    | `void`  |
+
+You can call a child method assigning a _#id_ in your `<ng-dropfile>` tag in your html:
+
+```html
+<ng-dropfile #dropfileChild ></ng-dropfile>
+```
+
+And access it in your parent component in this way:
+
+```typescript
+export class MyComponent {
+
+ constructor(){ }
+
+@ViewChild(DropfileComponent) dropfileChild: DropfileComponent;
+
+myClearFunction(){
+    this.dropfileChild.clear();
+  }
+}
+```
+
 
 
 ## License

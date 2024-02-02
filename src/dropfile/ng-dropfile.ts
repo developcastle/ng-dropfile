@@ -1,52 +1,58 @@
 export class DropfileOptions {
-  defaultFile?: string;
-  maxFileSize?: number;
-  minWidth?: number;
-  maxWidth?: number;
-  minHeight?: number;
-  maxHeight?: number;
-  showRemove?: boolean;
-  showLoader?: boolean;
-  showErrors?: boolean;
-  formatsAccepted?: string[];
+  constructor(options: DropfileOptions = {}) {
+    Object.assign(this, options);
+    this.messages = { ...this.dmessages, ...options.messages };
+    this.errors = { ...this.derrors, ...options.errors };
+  }
+
+  defaultFile?: string = '';
+  maxFileSize?: number = 1;
+  minWidth?: number = 0;
+  maxWidth?: number = 0;
+  minHeight?: number = 0;
+  maxHeight?: number = 0;
+  showRemove?: boolean = false;
+  showLoader?: boolean = false;
+  showErrors?: boolean = false;
+  formatsAccepted?: string[] = ['png', 'jpg', 'jpeg', 'gif', 'pdf'];
   messages?: {
-    description?: string;
+    default?: string;
     formats?: string;
     replace?: string;
+  } = {
+    default: 'Choose a file or drag and drop it here',
+    formats: '',
+    replace: 'Click to replace',
   };
   errors?: {
+    default?: string;
+    filesize?: string;
+    formats?: string;
+  } = {
+    default: 'Ooops; something wrong happened.',
+    filesize: 'Some files are too big.',
+    formats: "Some files don't match the valid formats.",
+  };
+  multiple?: boolean = true;
+  showFileList?: boolean = true;
+
+  private dmessages?: {
+    default: string;
+    formats: string;
+    replace: string;
+  } = {
+    default: 'Choose a file or drag and drop it here',
+    formats: 'Only <formats> formats accepted.',
+    replace: 'Click to replace',
+  };
+
+  private derrors?: {
     default: string;
     filesize: string;
     formats: string;
+  } = {
+    default: 'Ooops; something wrong happened.',
+    filesize: 'Some files are too big.',
+    formats: "Some files don't match the valid formats.",
   };
-  multiple?: boolean;
-  showFileList?: boolean;
-}
-
-export class DropfileDefaultOptions extends DropfileOptions {
-  constructor() {
-    super(); // 
-    this.defaultFile = '';
-    this.maxFileSize = 0.6;
-    this.minWidth = 0;
-    this.maxWidth = 0;
-    this.minHeight = 0;
-    this.maxHeight = 0;
-    this.multiple = true;
-    this.showRemove = true;
-    this.showLoader = true;
-    this.showErrors = true;
-    this.showFileList = true;
-    this.formatsAccepted = ['png', 'jpg', 'jpeg', 'gif', 'pdf'];
-    this.messages = {
-      description: 'Choose a file or drag and drop it here',
-      formats: '',
-      replace: 'Click to replace',
-    };
-    this.errors = {
-      default: 'Ooops; something wrong happened.',
-      filesize: 'Some files are too big.',
-      formats: 'Some files don\'t match the valid formats.',
-    };
-  }
 }

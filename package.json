@@ -2,6 +2,8 @@
   "name": "ng-dropfile",
   "version": "1.0.8",
   "author": "Daniel Castro <danielcn.9003@gmail.com>",
+  "repository": "https://github.com/developcastle/ng-dropfile/tree/development",
+  "homepage": "https://github.com/developcastle/ng-dropfile/tree/development", 
   "main": "dist/ng-dropfile.umd.js",
   "module": "dist/ng-dropfile.esm.js",
   "access": "public",

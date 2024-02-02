@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DropfileOptions, DropfileDefaultOptions } from './ng-dropfile';
+import { DropfileOptions } from './ng-dropfile';
 import { trigger, transition, animate, style } from '@angular/animations';
 
 export const fadeOutAnimation = trigger('fadeOut', [
@@ -13,14 +13,13 @@ export const fadeOutAnimation = trigger('fadeOut', [
   animations: [fadeOutAnimation],
 })
 export class DropfileComponent implements DropfileOptions, OnInit {
-  //Events
-  @Output() onSelect: EventEmitter<File[] | FileList> = new EventEmitter<
-    File[] | FileList
-  >();
+  //Events emitters
+  @Output() onSelect: EventEmitter<File[]> = new EventEmitter<File[]>();
   @Output() onDelete: EventEmitter<File> = new EventEmitter<File>();
   @Output() onClear: EventEmitter<void> = new EventEmitter<void>();
   @Output() onError: EventEmitter<string> = new EventEmitter<string>();
 
+  //Options
   @Input() defaultFile: string;
   @Input() maxFileSize: number;
   @Input() minWidth: number;
@@ -37,16 +36,15 @@ export class DropfileComponent implements DropfileOptions, OnInit {
   @Input() showFileList: boolean;
 
   constructor() {
-    const defaultValues: DropfileOptions = new DropfileDefaultOptions();
+    const defaultValues: DropfileOptions = new DropfileOptions();
     Object.assign(this, defaultValues);
   }
 
   ngOnInit(): void {
-    if (this.messages.formats == '')
       this.messages.formats = this.generateFormatMessage();
   }
   protected imagenSeleccionada: string = '';
-  selectedFiles: File[] = [];
+  protected selectedFiles: File[] = [];
   protected displayImage: boolean = false;
 
   protected onDrop(event: any): void {
@@ -67,11 +65,11 @@ export class DropfileComponent implements DropfileOptions, OnInit {
   }
 
   protected onFileSelect(event: any): void {
-    const files: FileList = event.target.files;
+    const files: File[] = event.target.files;
     this.verifyFiles(files);
   }
 
-  protected verifyFiles(files: File[] | FileList) {
+  protected verifyFiles(files: File[]) {
     if (files) {
       const archivosNoValidos = Array.from(files).filter(
         (file) => this.bytesToMB(file.size) > this.maxFileSize
@@ -89,6 +87,32 @@ export class DropfileComponent implements DropfileOptions, OnInit {
         if (this.selectedFiles.length == 1 && this.isImageFile(file)) {
           this.imagenSeleccionada = URL.createObjectURL(file);
           this.displayImage = true;
+              const fileSize = file.size; // Tamaño en bytes
+              const fileName = file.name; // Nombre del archivo
+              const fileType = file.type; // Tipo MIME
+    
+                  // Crear un objeto de tipo FileReader para obtener el ancho y alto de la imagen
+              const reader = new FileReader();
+              reader.onload = (e: any) => {
+                const image = new Image();
+                image.src = e.target.result;
+                console.log(image);
+
+               
+                image.onload = () => {
+                   // Ancho y alto de la imagen
+                const width = image.width;
+                const height = image.height;
+                  console.log('Nombre del archivo:', fileName);
+                  console.log('Tamaño del archivo:', fileSize, 'bytes');
+                  console.log('Tipo MIME:', fileType);
+                  console.log('Ancho de la imagen:', width, 'px');
+                  console.log('Alto de la imagen:', height, 'px');
+                }
+              };
+
+              // Leer el contenido de la imagen como una URL de datos
+              reader.readAsDataURL(file);
         } else {
           this.displayImage = false;
         }
@@ -133,15 +157,16 @@ export class DropfileComponent implements DropfileOptions, OnInit {
 
   protected generateFormatMessage(): string {
     const formatNames = this.formatsAccepted.map((ext) => ext.toUpperCase());
-
+    let text ='';
     if (formatNames.length === 1) {
-      return formatNames[0];
+      text=  formatNames[0];
     } else if (formatNames.length === 2) {
-      return formatNames.join(' and ');
+      text=   formatNames.join(' and ');
     } else {
       const lastFormat = formatNames.pop();
-      return `${formatNames.join(', ')}, and ${lastFormat} formats accepted.`;
+      text=   `${formatNames.join(', ')}, and ${lastFormat}`;
     }
+    return this.messages.formats.replace('<formats>',text);
   }
 
   protected isImageFile(file: File): boolean {
@@ -155,5 +180,12 @@ export class DropfileComponent implements DropfileOptions, OnInit {
     this.selectedFiles = [];
     this.displayImage = false;
     this.onClear.emit();
+  }
+
+  /**
+   * Get the selected files
+   */
+  public getList(): File[] {
+    return this.selectedFiles;
   }
 }
