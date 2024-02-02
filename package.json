@@ -1,6 +1,6 @@
 {
   "name": "ng-dropfile",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "author": "Daniel Castro <danielcn.9003@gmail.com>",
   "main": "dist/ng-dropfile.umd.js",
   "module": "dist/ng-dropfile.esm.js",
