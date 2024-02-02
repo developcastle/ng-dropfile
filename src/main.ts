@@ -1,7 +1,7 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { AppModule } from './app/dropfile.module';
+import { NgDropfileModule } from './app/dropfile.module';
 
 
-platformBrowserDynamic().bootstrapModule(AppModule)
+platformBrowserDynamic().bootstrapModule(NgDropfileModule)
   .catch(err => console.error(err));
