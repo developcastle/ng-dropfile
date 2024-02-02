@@ -23,6 +23,9 @@ import { featherUploadCloud, featherFile ,featherTrash2,featherImage} from '@ng-
   providers: [
     
   ],
+  exports:[
+    DropfileComponent
+  ],
   bootstrap: [AppComponent]
 })
-export class DropfileModule { }
+export class NgDropfileModule { }
