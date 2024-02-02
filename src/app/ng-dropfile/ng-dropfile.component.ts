@@ -1,14 +1,25 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import {
   IFileUploadConfig,
   FileUploadConfigDefaults,
 } from '../models/fileInputOptions';
+import { trigger, transition, animate, style } from '@angular/animations';
+
+export const fadeOutAnimation = trigger('fadeOut', [
+  transition(':leave', [animate('0.5s', style({ opacity: 0 }))]),
+]);
 
 @Component({
   selector: 'ng-dropfile',
   templateUrl: './ng-dropfile.component.html',
   styleUrls: ['./ng-dropfile.component.scss'],
-  
+  animations: [fadeOutAnimation],
 })
 export class FileuploadComponent implements IFileUploadConfig, OnInit {
   def: FileUploadConfigDefaults = new FileUploadConfigDefaults();
@@ -21,60 +32,29 @@ export class FileuploadComponent implements IFileUploadConfig, OnInit {
   @Input() showRemove: boolean = this.def.getDefault('showRemove');
   @Input() showLoader: boolean = this.def.getDefault('showLoader');
   @Input() showErrors: boolean = this.def.getDefault('showErrors');
-  @Input() errorTimeout: number = this.def.getDefault('errorTimeout');
-  @Input() formatsAccepted: string[] =
-    this.def.getDefault('formatsAccepted');
+  @Input() formatsAccepted: string[] = this.def.getDefault('formatsAccepted');
 
   @Input() message: string = this.def.getDefault('message');
   @Input() formatsMessage: string = this.def.getDefault('formatsMessage');
   @Input() msgError: string = this.def.getDefault('msgError');
   @Input() msgReplace: string = this.def.getDefault('msgReplace');
-  @Input() multiple: boolean = this.def.getDefault('multiple');  
+  @Input() multiple: boolean = this.def.getDefault('multiple');
+  @Input() showFileList: boolean = this.def.getDefault('showFileList');
 
   constructor() {}
 
   ngOnInit(): void {
-    if(this.formatsMessage == '') this.formatsMessage = this.generateFormatMessage();
+    if (this.formatsMessage == '')
+      this.formatsMessage = this.generateFormatMessage();
   }
-
+  imagenSeleccionada: string = '';
   selectedFiles: File[] = [];
-
-  onFileSelected(event: any): void {
-    const files: File[] = event.target.files;
-    this.selectedFiles = [...files];
-  }
-
-  onDragEnter(event: DragEvent): void {
-    event.preventDefault();
-    // Puedes agregar estilos visuales al entrar en el área de arrastre si lo deseas
-  }
-
-  onDragLeave(event: DragEvent): void {
-    // Puedes restaurar los estilos visuales al salir del área de arrastre si lo deseas
-  }
+  displayImage: boolean = false;
 
   onDrop(event: any): void {
-    console.log(event);
     event.preventDefault();
     const files: File[] = event.dataTransfer.files;
-
-    if (files) {  
-      // Validar las extensiones
-      const archivosValidos = Array.from(files).filter(file => this.isValidFileExtension(file.name));
-  
-      // Ahora puedes trabajar con los archivos válidos
-      this.selectedFiles = [...archivosValidos];
-  
-      // Manejar los archivos no válidos (opcional)
-      const archivosNoValidos = Array.from(files).filter(file => !this.isValidFileExtension(file.name));
-      if (archivosNoValidos.length > 0) {
-        console.log('Archivos no válidos:', archivosNoValidos);
-        alert('Algunos archivos no son de las extensiones permitidas.');
-      }
-    }else{
-     
-    }
- 
+    this.verifyFiles(files);
     event.stopPropagation();
   }
 
@@ -94,41 +74,68 @@ export class FileuploadComponent implements IFileUploadConfig, OnInit {
     fileInput.click();
   }
 
-  handleFileSelect(event: any): void {
-    const files: FileList = event.target.files; 
-    console.log(event);
-    this.selectedFiles = Array.from(files);
-
-
-    
+  onFileSelect(event: any): void {
+    const files: FileList = event.target.files;
+    this.verifyFiles(files);
   }
 
+  verifyFiles(files: File[] | FileList) {
+    if (files) {
+      const archivosNoValidos = Array.from(files).filter(
+        (file) => file.size > this.maxFileSize
+      );
+      if (archivosNoValidos.length > 0) {
+        alert('Algunos archivos pesan demasiado');
+        return;
+      }
+      this.imagenSeleccionada = URL.createObjectURL(files[0]);
+      if (this.selectedFiles.length > 0) {
+        this.selectedFiles.push(...Array.from(files));
+      } else {
+        this.selectedFiles = Array.from(files);
+        let file = this.selectedFiles[0];
+        if (this.selectedFiles.length == 1 && this.isImageFile(file)) {
+          this.imagenSeleccionada = URL.createObjectURL(file);
+          this.displayImage = true;
+        } else {
+          this.displayImage = false;
+        }
+      }
+    }
+  }
 
   isValidFileExtension(fileName: string): boolean {
     const extension = fileName.split('.').pop()?.toLowerCase();
     return extension ? this.formatsAccepted.includes(extension) : false;
   }
 
-  removeFile(index:number){
+  getFileExtension(fileName: string): string {
+    return fileName.split('.').pop()?.toLowerCase() || '';
+  }
+  someCondition: boolean = true;
+  removeFile(index: number) {
+    this.someCondition = true;
     this.selectedFiles.splice(index, 1);
+    if (this.selectedFiles.length == 0) this.displayImage = false;
   }
 
-
-  
   formatFileSize(bytes: number): string {
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];  
-    if (bytes === 0) return '0 Byte';    
-    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)).toString(), 10);    
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes === 0) return '0 Byte';
+    const i = parseInt(
+      Math.floor(Math.log(bytes) / Math.log(1024)).toString(),
+      10
+    );
     return Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + ' ' + sizes[i];
   }
 
   generateAcceptAttribute(): string {
-    return this.formatsAccepted.map(ext => `.${ext}`).join(',');
+    return this.formatsAccepted.map((ext) => `.${ext}`).join(',');
   }
 
   generateFormatMessage(): string {
-    const formatNames = this.formatsAccepted.map(ext => ext.toUpperCase());
-  
+    const formatNames = this.formatsAccepted.map((ext) => ext.toUpperCase());
+
     if (formatNames.length === 1) {
       return formatNames[0];
     } else if (formatNames.length === 2) {
@@ -143,4 +150,3 @@ export class FileuploadComponent implements IFileUploadConfig, OnInit {
     return file.type.startsWith('image/');
   }
 }
-

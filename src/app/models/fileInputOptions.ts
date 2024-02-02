@@ -8,18 +8,18 @@ export interface IFileUploadConfig {
     showRemove?: boolean; 
     showLoader?: boolean;
     showErrors?: boolean;
-    errorTimeout?: number;
     formatsAccepted?: string[];//yes
     message?: string;//yes
     formatsMessage?: string;//yes
     msgReplace?: string;
     msgError?: string;
     multiple?: boolean;
+    showFileList?: boolean;
 }
 
 export  class  FileUploadConfigDefaults implements IFileUploadConfig {
     defaultFile= '';
-    maxFileSize= 0;
+    maxFileSize= 348576;
     minWidth= 0;
     maxWidth= 0;
     minHeight= 0;
@@ -28,7 +28,7 @@ export  class  FileUploadConfigDefaults implements IFileUploadConfig {
     showRemove= true;
     showLoader= true;
     showErrors= true;
-    errorTimeout= 3000;
+    showFileList= true;
     formatsAccepted= ['png', 'jpg', 'jpeg', 'gif','bmp' ,'pdf'];
     message= 'Choose a file or drag and drop it here';
     formatsMessage= '';
