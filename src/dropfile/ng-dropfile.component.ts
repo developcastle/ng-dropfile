@@ -31,7 +31,7 @@ export class DropfileComponent implements DropfileOptions, OnInit {
   @Input() showErrors: boolean;
   @Input() formatsAccepted: string[];
   @Input() messages: any;
-  @Input() error: any;
+  @Input() errors: any;
   @Input() multiple: boolean;
   @Input() showFileList: boolean;
 
@@ -41,7 +41,7 @@ export class DropfileComponent implements DropfileOptions, OnInit {
   }
 
   ngOnInit(): void {
-      this.messages.formats = this.generateFormatMessage();
+    this.messages.formats = this.generateFormatMessage();
   }
   protected imagenSeleccionada: string = '';
   protected selectedFiles: File[] = [];
@@ -66,63 +66,47 @@ export class DropfileComponent implements DropfileOptions, OnInit {
 
   protected onFileSelect(event: any): void {
     const files: File[] = event.target.files;
-    this.verifyFiles(files);
+    if (files) this.verifyFiles(files);
   }
 
   protected verifyFiles(files: File[]) {
-    if (files) {
-      const archivosNoValidos = Array.from(files).filter(
-        (file) => this.bytesToMB(file.size) > this.maxFileSize
-      );
-      if (archivosNoValidos.length > 0) {
-        this.onError.emit('Some files are too big.');
-        return;
-      }
-      this.imagenSeleccionada = URL.createObjectURL(files[0]);
-      if (this.selectedFiles.length > 0) {
-        this.selectedFiles.push(...Array.from(files));
-      } else {
-        this.selectedFiles = Array.from(files);
-        let file = this.selectedFiles[0];
-        if (this.selectedFiles.length == 1 && this.isImageFile(file)) {
-          this.imagenSeleccionada = URL.createObjectURL(file);
-          this.displayImage = true;
-              const fileSize = file.size; // Tamaño en bytes
-              const fileName = file.name; // Nombre del archivo
-              const fileType = file.type; // Tipo MIME
-    
-                  // Crear un objeto de tipo FileReader para obtener el ancho y alto de la imagen
-              const reader = new FileReader();
-              reader.onload = (e: any) => {
-                const image = new Image();
-                image.src = e.target.result;
-                console.log(image);
-
-               
-                image.onload = () => {
-                   // Ancho y alto de la imagen
-                const width = image.width;
-                const height = image.height;
-                  console.log('Nombre del archivo:', fileName);
-                  console.log('Tamaño del archivo:', fileSize, 'bytes');
-                  console.log('Tipo MIME:', fileType);
-                  console.log('Ancho de la imagen:', width, 'px');
-                  console.log('Alto de la imagen:', height, 'px');
-                }
-              };
-
-              // Leer el contenido de la imagen como una URL de datos
-              reader.readAsDataURL(file);
-        } else {
-          this.displayImage = false;
-        }
-      }
-
-      this.onSelect.emit(files);
+    //Controling the invalid files
+    const archivosNoValidos = Array.from(files).filter(
+      (file) => this.bytesToMB(file.size) > this.maxFileSize
+    );
+    if (archivosNoValidos.length > 0) {
+      this.onError.emit(this.errors.fileSize);
+      return;
     }
+
+    //Removed the duplicated files
+    files = Array.from(files).filter((e) => !this.fileExists(e));
+
+    this.imagenSeleccionada = URL.createObjectURL(files[0]);
+    if (this.selectedFiles.length > 0) {
+      this.selectedFiles.push(...Array.from(files));
+    } else {
+      this.selectedFiles = Array.from(files);
+      let file = this.selectedFiles[0];
+
+      if (this.selectedFiles.length == 1 && this.isImageFile(file)) {
+        this.imagenSeleccionada = URL.createObjectURL(file);
+        this.displayImage = true;
+      } else {
+        this.displayImage = false;
+      }
+    }
+
+    this.onSelect.emit(files);
   }
   protected bytesToMB(bytes: number): number {
     return bytes / (1024 * 1024);
+  }
+
+  fileExists(archivo: File) {
+    return this.selectedFiles.some(
+      (ef) => ef.name === archivo.name && ef.size === archivo.size
+    );
   }
 
   protected isValidFileExtension(fileName: string): boolean {
@@ -157,16 +141,16 @@ export class DropfileComponent implements DropfileOptions, OnInit {
 
   protected generateFormatMessage(): string {
     const formatNames = this.formatsAccepted.map((ext) => ext.toUpperCase());
-    let text ='';
+    let text = '';
     if (formatNames.length === 1) {
-      text=  formatNames[0];
+      text = formatNames[0];
     } else if (formatNames.length === 2) {
-      text=   formatNames.join(' and ');
+      text = formatNames.join(' and ');
     } else {
       const lastFormat = formatNames.pop();
-      text=   `${formatNames.join(', ')}, and ${lastFormat}`;
+      text = `${formatNames.join(', ')}, and ${lastFormat}`;
     }
-    return this.messages.formats.replace('<formats>',text);
+    return this.messages.formats.replace('<formats>', text);
   }
 
   protected isImageFile(file: File): boolean {

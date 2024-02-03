@@ -1,6 +1,6 @@
 <div class="upload-container" style="text-align: center">
   <div
-    class="fu-container"
+    class="fu-container" [ngClass]="{'fu-image-displayed' : displayImage}"
     (dragover)="onDragOver($event)"
     (drop)="onDrop($event)"
     (click)="triggerFileInput(fileInput)"
@@ -29,6 +29,9 @@
     <img class="fu-image" [src]="imagenSeleccionada" alt="Imagen Seleccionada">
   </div>
    
+  <div class="fu-replace-msg">
+    <span>{{messages.replace}}</span>
+  </div>
   </div>
   <br />
 
@@ -71,6 +74,6 @@
         <div class="fu-animate-square"></div>
       </div>
     </div>
-  
+  <p class="fu-clear"><span (click)="clear()">Clear list</span></p>
   </ng-container>
 </div>

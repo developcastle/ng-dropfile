@@ -1,9 +1,13 @@
 
 # ng-dropfile
 
-An easy-to-use and customizable Angular component for handling file uploads with advanced features such as image preview, file deletion, and multiple event triggers. Empower your applications with seamless file management using the Angular Dropify component.
+An easy-to-use and customizable Angular component for handling files with style.
 
-
+- Advanced features
+- Customizable
+- Image preview
+- File deletion
+- Multiple event triggers
 
 ## Installation
 
@@ -48,7 +52,7 @@ You can customize your _dropfile_ properties directly. In this example, we chang
 
 This is how you can change the default messages for the component:
 ```html
-<ng-dropfile [messages]="{ description:'Drag and Drop your files'}"></ng-dropfile>
+<ng-dropfile [messages]=:'Drag and Drop your files'}"></ng-dropfile>
 ```
 You also can capture the  emmited events:
 ```html
@@ -61,7 +65,7 @@ Individual customizable options.
 | Option          | Description                                       | Type                  | Default Value         |
 | ------------------ | ------------------------------------------------- | --------------------- | --------------------- |
 | `defaultFile`      | Default file name.                                | `string`              | ''                   |
-| `maxFileSize`      | Maximum file size in megabytes.                   | `number`              | 1    |
+| `maxFileSize`      | Maximum file size in megabytes.                   | `number`              | 0.6    |
 | `minWidth`         | Minimum allowed width for images.                 | `number`              | 0                     |
 | `maxWidth`         | Maximum allowed width for images.                 | `number`              | 0                     |
 | `minHeight`        | Minimum allowed height for images.                | `number`              | 0                    |
@@ -75,14 +79,13 @@ Individual customizable options.
 | `messages`         | Custom messages for the user interface.           | `object` |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default message to select file.   | `string`  | Choose a file or drag and drop it here |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`formats`       | Default message for accepted formats/extensions.   | `string`  | Only <formats> formats accepted. |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default message to replace file.   | `string`  | `Click to replace |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default message to replace file.   | `string`  | Click to replace |
 | `errors`           | Possible error messages.                          | `object` |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default error message   | `string`  | Ooops; something wrong happened. |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`filesize`       | Default error message for file size.   | `string`  | Some files are too big. |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`formats`       | Default message to replace file.   | `string`  | Some files don't match the valid formats. |
 
 ## Events
-Callable
 
 | Event            | Description                                        | Response                        |
 |-------------------|----------------------------------------------------|-----------------------------------|
@@ -96,10 +99,10 @@ Callable
 
 | Event            | Description                                        | Event Type                        |
 |-------------------|----------------------------------------------------|-----------------------------------|
-| `getFiles`          |We get the selected files.       | `File[]` |
+| `getFiles`          |Get the selected files.       | `File[]` |
 | `clear`   | Clear all selected files.    | `void`  |
 
-You can call a child method assigning a _#id_ in your `<ng-dropfile>` tag in your html:
+You can call a dropfile child component method assigning a __#id__ in your `<ng-dropfile>` tag in your html:
 
 ```html
 <ng-dropfile #dropfileChild ></ng-dropfile>

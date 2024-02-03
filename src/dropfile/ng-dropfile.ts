@@ -43,7 +43,7 @@ export class DropfileOptions {
   } = {
     default: 'Choose a file or drag and drop it here',
     formats: 'Only <formats> formats accepted.',
-    replace: 'Click to replace',
+    replace: 'Click to replace to file',
   };
 
   private derrors?: {
