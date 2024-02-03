@@ -60,43 +60,43 @@ Individual customizable options.
 
 | Option          | Description                                       | Type                  | Default Value         |
 | ------------------ | ------------------------------------------------- | --------------------- | --------------------- |
-| `defaultFile`      | Default file name.                                | `string`              | `''`                    |
-| `maxFileSize`      | Maximum file size in megabytes.                   | `number`              | `0.6`                   |
-| `minWidth`         | Minimum allowed width for images.                 | `number`              | `0`                     |
-| `maxWidth`         | Maximum allowed width for images.                 | `number`              | `0`                     |
-| `minHeight`        | Minimum allowed height for images.                | `number`              | `0`                     |
-| `maxHeight`        | Maximum allowed height for images.                | `number`              | `0`                     |
-| `multiple`         | Allow multiple file selection.                   | `boolean`             | `true`                |
-| `showRemove`       | Show or hide the option to remove files.          | `boolean`             | `true`                |
-| `showLoader`       | Show or hide the loading indicator.              | `boolean`             | `true`                |
-| `showErrors`       | Show or hide error messages.                      | `boolean`             | `true`                |
-| `showFileList`     | Show or hide the list of selected files.          | `boolean`             | `true`                |
-| `formatsAccepted`  | Accepted file formats.                            | `string[]`            | `['png', 'jpg', 'jpeg', 'gif', 'pdf']` |
+| `defaultFile`      | Default file name.                                | `string`              | ''                   |
+| `maxFileSize`      | Maximum file size in megabytes.                   | `number`              | 1    |
+| `minWidth`         | Minimum allowed width for images.                 | `number`              | 0                     |
+| `maxWidth`         | Maximum allowed width for images.                 | `number`              | 0                     |
+| `minHeight`        | Minimum allowed height for images.                | `number`              | 0                    |
+| `maxHeight`        | Maximum allowed height for images.                | `number`              | 0                    |
+| `multiple`         | Allow multiple file selection.                   | `boolean`             | true                |
+| `showRemove`       | Show or hide the option to remove files.          | `boolean`             | true                |
+| `showLoader`       | Show or hide the loading indicator.              | `boolean`             | true                |
+| `showErrors`       | Show or hide error messages.                      | `boolean`             | true               |
+| `showFileList`     | Show or hide the list of selected files.          | `boolean`             | true                |
+| `formatsAccepted`  | Accepted file formats.                            | `string[]`            | ['png', 'jpg', 'jpeg', 'gif', 'pdf'] |
 | `messages`         | Custom messages for the user interface.           | `object` |  |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default message to select file.   | `string`  | `Choose a file or drag and drop it here` |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`formats`       | Default message for accepted formats/extensions.   | `string`  | `Only <formats> formats accepted.` |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default message to replace file.   | `string`  | `Click to replace` |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default message to select file.   | `string`  | Choose a file or drag and drop it here |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`formats`       | Default message for accepted formats/extensions.   | `string`  | Only <formats> formats accepted. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default message to replace file.   | `string`  | `Click to replace |
 | `errors`           | Possible error messages.                          | `object` |  |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default error message   | `string`  | `Ooops; something wrong happened.` |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`filesize`       | Default error message for file size.   | `string`  | `Some files are too big.` |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`formats`       | Default message to replace file.   | `string`  | `Some files don't match the valid formats.` |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default error message   | `string`  | Ooops; something wrong happened. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`filesize`       | Default error message for file size.   | `string`  | Some files are too big. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`formats`       | Default message to replace file.   | `string`  | Some files don't match the valid formats. |
 
 ## Events
 Callable
 
-| Event            | Description                                        | Event Type                        |
+| Event            | Description                                        | Response                        |
 |-------------------|----------------------------------------------------|-----------------------------------|
-| `onDelete`          | Triggered when a file is deleted or removed.       | `EventEmitter<File>` |
-| `onSelect`   | Triggered when one or more files are selected.     | `EventEmitter<File[]>`  |
-| `onError`           | Triggered when an error occurs.                    | `EventEmitter<string>`            |
-| `onClear`           | Triggered when the component is reset or cleared.  | `EventEmitter<void>`              |
+| `onDelete`          | Triggered when a file is deleted or removed.       | `File` |
+| `onSelect`   | Triggered when one or more files are selected.     | `File[]`  |
+| `onError`           | Triggered when an error occurs.                    | `string`            |
+| `onClear`           | Triggered when the component is reset or cleared.  | `void`              |
 
 ## Methods
 
 
 | Event            | Description                                        | Event Type                        |
 |-------------------|----------------------------------------------------|-----------------------------------|
-| `getList`          |We get the selected files.       | `File[]` |
+| `getFiles`          |We get the selected files.       | `File[]` |
 | `clear`   | Clear all selected files.    | `void`  |
 
 You can call a child method assigning a _#id_ in your `<ng-dropfile>` tag in your html:

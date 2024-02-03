@@ -185,7 +185,7 @@ export class DropfileComponent implements DropfileOptions, OnInit {
   /**
    * Get the selected files
    */
-  public getList(): File[] {
+  public getFiles(): File[] {
     return this.selectedFiles;
   }
 }
