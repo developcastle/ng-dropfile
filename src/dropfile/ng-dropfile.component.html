@@ -32,6 +32,7 @@
   <div class="fu-replace-msg">
     <span>{{messages.replace}}</span>
   </div>
+  <p class="fu-error-msg" *ngIf="error"><span>{{this.error}}</span></p>
   </div>
   <br />
 
@@ -75,5 +76,7 @@
       </div>
     </div>
   <p class="fu-clear"><span (click)="clear()">Clear list</span></p>
+
+ 
   </ng-container>
 </div>

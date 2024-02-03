@@ -40,8 +40,10 @@ export class DropfileComponent implements DropfileOptions, OnInit {
     Object.assign(this, defaultValues);
   }
 
+  protected error:string;
   ngOnInit(): void {
     this.messages.formats = this.generateFormatMessage();
+    this.errors.filesize = this.generateFilesizeErrorMessage();
   }
   protected imagenSeleccionada: string = '';
   protected selectedFiles: File[] = [];
@@ -70,14 +72,30 @@ export class DropfileComponent implements DropfileOptions, OnInit {
   }
 
   protected verifyFiles(files: File[]) {
+    this.error = '';
+
     //Controling the invalid files
-    const archivosNoValidos = Array.from(files).filter(
+    const invalidSizeFiles = Array.from(files).filter(
       (file) => this.bytesToMB(file.size) > this.maxFileSize
     );
-    if (archivosNoValidos.length > 0) {
-      this.onError.emit(this.errors.fileSize);
+    if (invalidSizeFiles.length > 0) {
+      console.log("filesize error");
+      this.error = this.errors.filesize;
+      this.onError.emit(this.errors.filesize);
       return;
     }
+
+    //Controling the invalid files
+    const invalidFormatFiles = Array.from(files).filter(
+      (file) => !this.isValidFileExtension(file.name)
+    );
+    if (invalidFormatFiles.length > 0) {
+      this.error = this.errors.formats;
+      this.onError.emit(this.errors.formats);
+      return;
+    }
+
+   
 
     //Removed the duplicated files
     files = Array.from(files).filter((e) => !this.fileExists(e));
@@ -151,6 +169,9 @@ export class DropfileComponent implements DropfileOptions, OnInit {
       text = `${formatNames.join(', ')}, and ${lastFormat}`;
     }
     return this.messages.formats.replace('<formats>', text);
+  }
+  generateFilesizeErrorMessage(): string{
+    return String(this.errors.filesize).replace('<maxFileSize>',this.maxFileSize.toString());
   }
 
   protected isImageFile(file: File): boolean {

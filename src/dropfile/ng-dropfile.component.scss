@@ -15,6 +15,16 @@
   }
 }
 
+.fu-error-msg{
+  display: block;
+    position: absolute;
+    font-size: 0.8rem;
+    color: #ffc3c3;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+}
+
 .fu-fileinfo {
   margin-top: 10px;
   padding: 5px;

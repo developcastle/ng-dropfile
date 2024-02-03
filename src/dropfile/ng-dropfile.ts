@@ -30,7 +30,7 @@ export class DropfileOptions {
     formats?: string;
   } = {
     default: 'Ooops; something wrong happened.',
-    filesize: 'Some files are too big.',
+    filesize: 'Some files are too big. Max size: <maxFileSize> MB',
     formats: "Some files don't match the valid formats.",
   };
   multiple?: boolean = true;
@@ -52,7 +52,7 @@ export class DropfileOptions {
     formats: string;
   } = {
     default: 'Ooops; something wrong happened.',
-    filesize: 'Some files are too big.',
+    filesize: 'Some files are too big. Max file size: <maxFileSize> MB',
     formats: "Some files don't match the valid formats.",
   };
 }
