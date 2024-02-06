@@ -14,15 +14,19 @@ export class DropfileOptions {
   showRemove?: boolean = false;
   showLoader?: boolean = false;
   showErrors?: boolean = false;
-  formatsAccepted?: string[] = ['png', 'jpg', 'jpeg', 'gif', 'pdf'];
+  formatsAccepted?: string[] = ['png', 'jpg', 'jpeg', 'docx', 'pdf'];
   messages?: {
+    button?: string;
     default?: string;
     formats?: string;
     replace?: string;
+    add?: string;
   } = {
+    button: 'Browse file',
     default: 'Choose a file or drag and drop it here',
     formats: '',
-    replace: 'Click to replace',
+    replace: 'Click to replace file',
+    add: 'Click to add a new file',
   };
   errors?: {
     default?: string;
@@ -33,17 +37,21 @@ export class DropfileOptions {
     filesize: 'Some files are too big. Max size: <maxFileSize> MB',
     formats: "Some files don't match the valid formats.",
   };
-  multiple?: boolean = true;
+  multiple?: boolean = false;
   showFileList?: boolean = true;
 
   private dmessages?: {
+    button: string;
     default: string;
     formats: string;
     replace: string;
+    add: string;
   } = {
+    button: 'Browse file',
     default: 'Choose a file or drag and drop it here',
     formats: 'Only <formats> formats accepted.',
-    replace: 'Click to replace to file',
+    replace: 'Click to replace file',
+    add: 'Click to add a new file',
   };
 
   private derrors?: {

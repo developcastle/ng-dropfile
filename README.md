@@ -78,11 +78,11 @@ Individual customizable options.
 | `formatsAccepted`  | Accepted file formats.                            | `string[]`            | ['png', 'jpg', 'jpeg', 'gif', 'pdf'] |
 | `messages`         | Custom messages for the user interface.           | `object` |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default message to select file.   | `string`  | Choose a file or drag and drop it here |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`formats`       | Default message for accepted formats/extensions.   | `string`  | Only <formats> formats accepted. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`formats`       | Default message for accepted formats/extensions.   | `string`  | Only \<formats\> formats accepted. |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default message to replace file.   | `string`  | Click to replace |
 | `errors`           | Possible error messages.                          | `object` |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default error message   | `string`  | Ooops; something wrong happened. |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`filesize`       | Default error message for file size.   | `string`  | Some files are too big. Max file size: <maxFileSize> MB. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`filesize`       | Default error message for file size.   | `string`  | Some files are too big. Max file size: \<maxFileSize\> MB. |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`formats`       | Default message to replace file.   | `string`  | Some files don't match the valid formats. |
 
 ## Events

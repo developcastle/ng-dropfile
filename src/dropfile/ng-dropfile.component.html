@@ -1,38 +1,61 @@
 <div class="upload-container" style="text-align: center">
   <div
-    class="fu-container" [ngClass]="{'fu-image-displayed' : displayImage}"
+    class="fu-container"
+    [ngClass]="{ 'fu-image-displayed': displayImage }"
     (dragover)="onDragOver($event)"
     (drop)="onDrop($event)"
     (click)="triggerFileInput(fileInput)"
   >
+    <div class="fu-content" [ngClass]="{ hidden: displayImage }">
+      <ng-icon
+        class="fu-icon"
+        [color]="'gray'"
+        [size]="'1.5rem'"
+        name="featherUploadCloud"
+      ></ng-icon>
+      <input
+        #fileInput
+        type="file"
+        [multiple]="multiple"
+        (change)="onFileSelect($event)"
+        [accept]="generateAcceptAttribute()"
+      />
+      <p class="fu-msg">{{ messages.default }}</p>
+      <p class="fu-smsg">{{ messages.formats }}</p>
+      <button class="fu-button">{{ messages.button }}</button>
+    </div>
 
-  <div class="fu-content" [ngClass]="{'hidden': displayImage}">
-    <ng-icon
-      class="fu-icon"
-      [color]="'gray'"
-      [size]="'1.5rem'"
-      name="featherUploadCloud"
-    ></ng-icon>
-    <input
-      #fileInput
-      type="file"
-      [multiple]="multiple"
-      (change)="onFileSelect($event)"
-      [accept]="generateAcceptAttribute()"
-    />
-    <p class="fu-msg">{{ messages.default }}</p>
-    <p class="fu-smsg">{{ messages.formats }}</p>
-    <button class="fu-button">Browse file</button>
-  </div>
+    <div class="fu-image-content" [ngClass]="{ hidden: !displayImage }">
+      <img
+        *ngIf="selectedImage"
+        class="fu-image"
+        [src]="imagenSeleccionada"
+        alt="Imagen Seleccionada"
+      />
 
-  <div class="fu-image-content" [ngClass]="{'hidden': !displayImage}">
-    <img class="fu-image" [src]="imagenSeleccionada" alt="Imagen Seleccionada">
-  </div>
-   
-  <div class="fu-replace-msg">
-    <span>{{messages.replace}}</span>
-  </div>
-  <p class="fu-error-msg" *ngIf="error"><span>{{this.error}}</span></p>
+      <div *ngIf="!selectedImage && selectedFile">
+        <ng-icon
+          class="fu-icon"
+          [color]="'gray'"
+          [size]="'5rem'"
+          name="featherFile"
+        ></ng-icon><br>
+
+        <span class="fu-extension-large" *ngIf="!isImageFile(selectedFile)" >{{
+          getFileExtension(selectedFile.name)
+        }}</span>
+
+        <p class="fu-filename"> {{selectedFile.name}}</p>
+      </div>
+    </div>
+
+    <div  class="fu-replace-msg">
+      <span *ngIf="multiple">{{ messages.add }}</span>
+      <span *ngIf="!multiple">{{ messages.replace }}</span>
+    </div>
+    <p class="fu-error-msg" *ngIf="error">
+      <span>{{ this.error }}</span>
+    </p>
   </div>
   <br />
 
@@ -40,7 +63,7 @@
     <div
       *ngFor="let file of selectedFiles; let i = index"
       class="fu-fileinfo"
-      [@fadeOut]="someCondition"
+      [@fadeOut]="animatedRemove"
     >
       <div class="fu-fileinfo-icon">
         <ng-icon
@@ -65,7 +88,7 @@
         <p>{{ file.name }}</p>
         <p class="fu-fileinfo-size">{{ this.formatFileSize(file.size) }}</p>
       </div>
-      <div class="fu-fileinfo-icon-remove" (click)="removeFile(i,file)">
+      <div class="fu-fileinfo-icon-remove" (click)="removeFile(i, file)">
         <ng-icon
           class="fu-icon"
           [color]="'gray'"
@@ -75,8 +98,6 @@
         <div class="fu-animate-square"></div>
       </div>
     </div>
-  <p class="fu-clear"><span (click)="clear()">Clear list</span></p>
-
- 
+    <p class="fu-clear"><span (click)="clear()">Clear list</span></p>
   </ng-container>
 </div>

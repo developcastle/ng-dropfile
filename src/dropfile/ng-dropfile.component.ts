@@ -40,14 +40,18 @@ export class DropfileComponent implements DropfileOptions, OnInit {
     Object.assign(this, defaultValues);
   }
 
-  protected error:string;
+  protected error: string;
+  protected animatedRemove: boolean = true;
+  protected selectedImage: boolean = false;
+  protected imagenSeleccionada: string = '';
+  protected selectedFiles: File[] = [];
+  protected selectedFile: File;
+  protected displayImage: boolean = false;
+
   ngOnInit(): void {
     this.messages.formats = this.generateFormatMessage();
     this.errors.filesize = this.generateFilesizeErrorMessage();
   }
-  protected imagenSeleccionada: string = '';
-  protected selectedFiles: File[] = [];
-  protected displayImage: boolean = false;
 
   protected onDrop(event: any): void {
     event.preventDefault();
@@ -73,13 +77,23 @@ export class DropfileComponent implements DropfileOptions, OnInit {
 
   protected verifyFiles(files: File[]) {
     this.error = '';
+    this.displayImage = false;
+    if (files.length == 0) return;
+
+    //Controling the multiples files not allowed
+    if (!this.multiple) {
+      if (files.length > 1) {
+        this.error = 'Multiples files not allowed';
+        this.onError.emit('Multiples files not allowed');
+        return;
+      }
+    }
 
     //Controling the invalid files
     const invalidSizeFiles = Array.from(files).filter(
       (file) => this.bytesToMB(file.size) > this.maxFileSize
     );
     if (invalidSizeFiles.length > 0) {
-      console.log("filesize error");
       this.error = this.errors.filesize;
       this.onError.emit(this.errors.filesize);
       return;
@@ -95,25 +109,26 @@ export class DropfileComponent implements DropfileOptions, OnInit {
       return;
     }
 
-   
-
     //Removed the duplicated files
     files = Array.from(files).filter((e) => !this.fileExists(e));
 
-    this.imagenSeleccionada = URL.createObjectURL(files[0]);
-    if (this.selectedFiles.length > 0) {
-      this.selectedFiles.push(...Array.from(files));
-    } else {
-      this.selectedFiles = Array.from(files);
-      let file = this.selectedFiles[0];
+    let file = files[0];
 
-      if (this.selectedFiles.length == 1 && this.isImageFile(file)) {
-        this.imagenSeleccionada = URL.createObjectURL(file);
-        this.displayImage = true;
-      } else {
-        this.displayImage = false;
-      }
+    //Controling the multiples files behaivor
+    if (!this.multiple) {
+      this.selectedFile = file;
+      this.selectedFiles[0] = file;
+    } else {
+      this.selectedFiles.push(...Array.from(files));
     }
+
+    // We select the first element of selected files
+    this.selectedFile = file;
+    this.displayImage = true;
+    if (this.isImageFile(file)) {
+      this.selectedImage = true;
+      this.imagenSeleccionada = URL.createObjectURL(file);
+    } else this.selectedImage = false;
 
     this.onSelect.emit(files);
   }
@@ -135,10 +150,10 @@ export class DropfileComponent implements DropfileOptions, OnInit {
   protected getFileExtension(fileName: string): string {
     return fileName.split('.').pop()?.toLowerCase() || '';
   }
-  someCondition: boolean = true;
+
   protected removeFile(index: number, file: File) {
     this.onDelete.emit(file);
-    this.someCondition = true;
+    this.animatedRemove = true;
     this.selectedFiles.splice(index, 1);
     if (this.selectedFiles.length == 0) this.displayImage = false;
   }
@@ -170,12 +185,16 @@ export class DropfileComponent implements DropfileOptions, OnInit {
     }
     return this.messages.formats.replace('<formats>', text);
   }
-  generateFilesizeErrorMessage(): string{
-    return String(this.errors.filesize).replace('<maxFileSize>',this.maxFileSize.toString());
+  generateFilesizeErrorMessage(): string {
+    return String(this.errors.filesize).replace(
+      '<maxFileSize>',
+      this.maxFileSize.toString()
+    );
   }
 
   protected isImageFile(file: File): boolean {
-    return file.type.startsWith('image/');
+    if (file) return file.type.startsWith('image/');
+    else return false;
   }
 
   /**
