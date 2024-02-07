@@ -5,15 +5,8 @@ export class DropfileOptions {
     this.errors = { ...this.derrors, ...options.errors };
   }
 
-  defaultFile?: string = '';
-  maxFileSize?: number = 1;
-  minWidth?: number = 0;
-  maxWidth?: number = 0;
-  minHeight?: number = 0;
-  maxHeight?: number = 0;
-  showRemove?: boolean = false;
-  showLoader?: boolean = false;
-  showErrors?: boolean = false;
+  maxFileSize?: number = 1;  
+  showErrors?: boolean = true;
   formatsAccepted?: string[] = ['png', 'jpg', 'jpeg', 'docx', 'pdf'];
   messages?: {
     button?: string;
@@ -37,7 +30,7 @@ export class DropfileOptions {
     filesize: 'Some files are too big. Max size: <maxFileSize> MB',
     formats: "Some files don't match the valid formats.",
   };
-  multiple?: boolean = false;
+  multiple?: boolean = true;
   showFileList?: boolean = true;
 
   private dmessages?: {

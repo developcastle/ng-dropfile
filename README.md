@@ -64,19 +64,13 @@ Individual customizable options.
 
 | Option          | Description                                       | Type                  | Default Value         |
 | ------------------ | ------------------------------------------------- | --------------------- | --------------------- |
-| `defaultFile`      | Default file name.                                | `string`              | ''                   |
-| `maxFileSize`      | Maximum file size in megabytes.                   | `number`              | 0.6    |
-| `minWidth`         | Minimum allowed width for images.                 | `number`              | 0                     |
-| `maxWidth`         | Maximum allowed width for images.                 | `number`              | 0                     |
-| `minHeight`        | Minimum allowed height for images.                | `number`              | 0                    |
-| `maxHeight`        | Maximum allowed height for images.                | `number`              | 0                    |
+| `maxFileSize`      | Maximum file size in megabytes.                   | `number`              | 1    |
 | `multiple`         | Allow multiple file selection.                   | `boolean`             | true                |
-| `showRemove`       | Show or hide the option to remove files.          | `boolean`             | true                |
-| `showLoader`       | Show or hide the loading indicator.              | `boolean`             | true                |
 | `showErrors`       | Show or hide error messages.                      | `boolean`             | true               |
 | `showFileList`     | Show or hide the list of selected files.          | `boolean`             | true                |
 | `formatsAccepted`  | Accepted file formats.                            | `string[]`            | ['png', 'jpg', 'jpeg', 'gif', 'pdf'] |
 | `messages`         | Custom messages for the user interface.           | `object` |  |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`button`       | Default message to browse button.   | `string`  | Browse file |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default message to select file.   | `string`  | Choose a file or drag and drop it here |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`formats`       | Default message for accepted formats/extensions.   | `string`  | Only \<formats\> formats accepted. |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default message to replace file.   | `string`  | Click to replace |

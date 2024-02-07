@@ -20,12 +20,7 @@ export class DropfileComponent implements DropfileOptions, OnInit {
   @Output() onError: EventEmitter<string> = new EventEmitter<string>();
 
   //Options
-  @Input() defaultFile: string;
   @Input() maxFileSize: number;
-  @Input() minWidth: number;
-  @Input() maxWidth: number;
-  @Input() minHeight: number;
-  @Input() maxHeight: number;
   @Input() showRemove: boolean;
   @Input() showLoader: boolean;
   @Input() showErrors: boolean;
@@ -122,18 +117,22 @@ export class DropfileComponent implements DropfileOptions, OnInit {
       this.selectedFiles.push(...Array.from(files));
     }
 
-    // We select the first element of selected files
-    this.selectedFile = file;
-    this.displayImage = true;
-    if (this.isImageFile(file)) {
-      this.selectedImage = true;
-      this.imagenSeleccionada = URL.createObjectURL(file);
-    } else this.selectedImage = false;
-
+    // We select the first element of selected files 
+    this.select(file);
     this.onSelect.emit(files);
   }
   protected bytesToMB(bytes: number): number {
     return bytes / (1024 * 1024);
+  }
+
+  protected select(file:File){
+    this.error ='';
+    this.displayImage = true;
+    this.selectedFile = file;
+    if (this.isImageFile(file)) {
+      this.selectedImage = true;
+      this.imagenSeleccionada = URL.createObjectURL(file);
+    } else this.selectedImage = false;
   }
 
   fileExists(archivo: File) {
@@ -152,9 +151,12 @@ export class DropfileComponent implements DropfileOptions, OnInit {
   }
 
   protected removeFile(index: number, file: File) {
-    this.onDelete.emit(file);
+    this.onDelete.emit(file);   
     this.animatedRemove = true;
     this.selectedFiles.splice(index, 1);
+    if(file == this.selectedFile){
+      this.select(this.selectedFiles[0]);
+    }
     if (this.selectedFiles.length == 0) this.displayImage = false;
   }
 

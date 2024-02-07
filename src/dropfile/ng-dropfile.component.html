@@ -53,14 +53,14 @@
       <span *ngIf="multiple">{{ messages.add }}</span>
       <span *ngIf="!multiple">{{ messages.replace }}</span>
     </div>
-    <p class="ng-dp-error-msg" *ngIf="error">
+    <p class="ng-dp-error-msg" *ngIf="error && showErrors">
       <span>{{ this.error }}</span>
     </p>
   </div>
   <br />
 
   <ng-container *ngIf="selectedFiles.length > 0 && showFileList">
-    <div
+    <div (click)="select(file)"
       *ngFor="let file of selectedFiles; let i = index"
       class="ng-dp-fileinfo"
       [@fadeOut]="animatedRemove"
