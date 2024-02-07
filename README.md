@@ -52,7 +52,7 @@ You can customize your _dropfile_ properties directly. In this example, we chang
 
 This is how you can change the default messages for the component:
 ```html
-<ng-dropfile [messages]=:'Drag and Drop your files'}"></ng-dropfile>
+<ng-dropfile [messages]="{ default:'Drag and Drop your files'}"></ng-dropfile>
 ```
 You also can capture the  emmited events:
 ```html
@@ -73,7 +73,8 @@ Individual customizable options.
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`button`       | Default message to browse button.   | `string`  | Browse file |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default message to select file.   | `string`  | Choose a file or drag and drop it here |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`formats`       | Default message for accepted formats/extensions.   | `string`  | Only \<formats\> formats accepted. |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default message to replace file.   | `string`  | Click to replace |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`replace`       | Default message to replace file.   | `string`  | Click to replace |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`add`       | Default message to replace file. Available on multiple files   | `string`  | Click to add a new file |
 | `errors`           | Possible error messages.                          | `object` |  |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`default`       | Default error message   | `string`  | Ooops; something wrong happened. |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`filesize`       | Default error message for file size.   | `string`  | Some files are too big. Max file size: \<maxFileSize\> MB. |
