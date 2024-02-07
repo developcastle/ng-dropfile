@@ -1,0 +1,103 @@
+<div class="upload-container" style="text-align: center">
+  <div
+    class="ng-dp-container"
+    [ngClass]="{ 'ng-dp-image-displayed': displayImage }"
+    (dragover)="onDragOver($event)"
+    (drop)="onDrop($event)"
+    (click)="triggerFileInput(fileInput)"
+  >
+    <div class="ng-dp-content" [ngClass]="{ hidden: displayImage }">
+      <ng-icon
+        class="ng-dp-icon"
+        [color]="'gray'"
+        [size]="'1.5rem'"
+        name="featherUploadCloud"
+      ></ng-icon>
+      <input
+        #fileInput
+        type="file"
+        [multiple]="multiple"
+        (change)="onFileSelect($event)"
+        [accept]="generateAcceptAttribute()"
+      />
+      <p class="ng-dp-msg">{{ messages.default }}</p>
+      <p class="ng-dp-smsg">{{ messages.formats }}</p>
+      <button class="ng-dp-button">{{ messages.button }}</button>
+    </div>
+
+    <div class="ng-dp-image-content" [ngClass]="{ hidden: !displayImage }">
+      <img
+        *ngIf="selectedImage"
+        class="ng-dp-image"
+        [src]="imagenSeleccionada"
+        alt="Imagen Seleccionada"
+      />
+
+      <div *ngIf="!selectedImage && selectedFile">
+        <ng-icon
+          class="ng-dp-icon"
+          [color]="'gray'"
+          [size]="'5rem'"
+          name="featherFile"
+        ></ng-icon><br>
+
+        <span class="ng-dp-extension-large" *ngIf="!isImageFile(selectedFile)" >{{
+          getFileExtension(selectedFile.name)
+        }}</span>
+
+        <p class="ng-dp-filename"> {{selectedFile.name}}</p>
+      </div>
+    </div>
+
+    <div  class="ng-dp-replace-msg">
+      <span *ngIf="multiple">{{ messages.add }}</span>
+      <span *ngIf="!multiple">{{ messages.replace }}</span>
+    </div>
+    <p class="ng-dp-error-msg" *ngIf="error && showErrors">
+      <span>{{ this.error }}</span>
+    </p>
+  </div>
+  <br />
+
+  <ng-container *ngIf="selectedFiles.length > 0 && showFileList">
+    <div (click)="select(file)"
+      *ngFor="let file of selectedFiles; let i = index"
+      class="ng-dp-fileinfo"
+      [@fadeOut]="animatedRemove"
+    >
+      <div class="ng-dp-fileinfo-icon">
+        <ng-icon
+          *ngIf="isImageFile(file)"
+          class="ng-dp-icon"
+          [color]="'gray'"
+          [size]="'2rem'"
+          name="featherImage"
+        ></ng-icon>
+        <ng-icon
+          *ngIf="!isImageFile(file)"
+          class="ng-dp-icon"
+          [color]="'gray'"
+          [size]="'2rem'"
+          name="featherFile"
+        ></ng-icon>
+        <span *ngIf="!isImageFile(file)" class="ng-dp-extension">{{
+          getFileExtension(file.name)
+        }}</span>
+      </div>
+      <div class="ng-dp-fileinfo-name">
+        <p>{{ file.name }}</p>
+        <p class="ng-dp-fileinfo-size">{{ this.formatFileSize(file.size) }}</p>
+      </div>
+      <div class="ng-dp-fileinfo-icon-remove" (click)="removeFile(i, file)">
+        <ng-icon
+          class="ng-dp-icon"
+          [color]="'gray'"
+          [size]="'1.4rem'"
+          name="featherTrash2"
+        ></ng-icon>
+        <div class="ng-dp-animate-square"></div>
+      </div>
+    </div>
+    <p class="ng-dp-clear"><span (click)="clear()">Clear list</span></p>
+  </ng-container>
+</div>

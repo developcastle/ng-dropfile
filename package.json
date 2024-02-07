@@ -1,15 +1,26 @@
 {
   "name": "ng-dropfile",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "author": "Daniel Castro <danielcn.9003@gmail.com>",
+  "repository": "https://github.com/developcastle/ng-dropfile/tree/development",
+  "homepage": "https://github.com/developcastle/ng-dropfile/tree/development",
   "main": "dist/ng-dropfile.umd.js",
   "module": "dist/ng-dropfile.esm.js",
   "access": "public",
+  "description": "An easy-to-use and customizable Angular component for handling files with style.",
+  "keywords": [
+    "image",
+    "drag",
+    "drop",
+    "file",
+    "upload"
+  ],
+  "license": "MIT",
   "peerDependencies": {
     "@angular/core": "^X.X.X"
   },
   "scripts": {
-    "build-lib": "ng-packagr -p ng-package.json ",
+    "build-lib": "ng-packagr -p ng-package.json",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -47,12 +58,5 @@
     "karma-jasmine-html-reporter": "~2.0.0",
     "typescript": "~4.9.4",
     "ng-packagr": "^17.1.2"
-  },
-  "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.10.",
-  "keywords": [
-    "drop",
-    "file",
-    "upload"
-  ],
-  "license": "MIT"
+  }
 }
