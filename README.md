@@ -3,6 +3,8 @@
 
 An easy-to-use and customizable Angular component for handling files with style.
 
+![alt text](https://i.ibb.co/c3QS6Lj/ngdropfile.png)
+
 - Advanced features
 - Customizable
 - Image preview
